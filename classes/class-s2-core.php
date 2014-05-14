@@ -156,6 +156,14 @@ class s2class {
 		if ( '' == $string ) {
 			return;
 		}
+
+        // maybe add social media sharing buttons
+        $social = apply_filters('s2_social_links', array('twitter', 'facebook', 'linkedin', 'google'));
+        if ( !empty($social) ) {
+            $social_buttons = $this->social_buttons($social);
+            $string = str_replace("{SOCIAL}", $social_buttons, $string);
+        }
+
 		$string = str_replace("{BLOGNAME}", html_entity_decode(get_option('blogname'), ENT_QUOTES), $string);
 		$string = str_replace("{BLOGLINK}", get_option('home'), $string);
 		$string = str_replace("{TITLE}", stripslashes($this->post_title), $string);
@@ -192,10 +200,16 @@ class s2class {
 		$subject = strip_tags(html_entity_decode($subject, ENT_QUOTES));
 		$subject = apply_filters('s2_email_subject', $subject);
 
+        // CIP
+        $type = 'html';
 		if ( 'html' == $type ) {
 			$headers = $this->headers('html', $attachments);
 			if ( 'yes' == $this->subscribe2_options['stylesheet'] ) {
-				$mailtext = apply_filters('s2_html_email', "<html><head><title>" . $subject . "</title><link rel=\"stylesheet\" href=\"" . get_stylesheet_uri() . "\" type=\"text/css\" media=\"screen\" /></head><body>" . $message . "</body></html>", $subject, $message);
+                if (strpos($message, '<html') !== FALSE) {
+                    $mailtext = apply_filters('s2_html_email', $message, $subject, $message);
+                } else {
+                    $mailtext = apply_filters('s2_html_email', "<html><head><title>" . $subject . "</title><link rel=\"stylesheet\" href=\"" . get_stylesheet_uri() . "\" type=\"text/css\" media=\"screen\" /></head><body>" . $message . "</body></html>", $subject, $message);
+                }
 			} else {
 				$mailtext = apply_filters('s2_html_email', "<html><head><title>" . $subject . "</title></head><body>" . $message . "</body></html>", $subject, $message);
 			}
@@ -481,7 +495,9 @@ class s2class {
 
 		// Get email subject
 		$subject = html_entity_decode(stripslashes(wp_kses($this->substitute($this->subscribe2_options['notification_subject']), '')));
+
 		// Get the message template
+//        $mailtext = file_get_contents(ABSPATH . 'wp-content/plugins/subscribe2/emails/new_post.html');
 		$mailtext = apply_filters('s2_email_template', $this->subscribe2_options['mailtext']);
 		$mailtext = stripslashes($this->substitute($mailtext));
 
@@ -569,19 +585,12 @@ class s2class {
 			}
 		}
 
-		// maybe add social media sharing buttons
-		$social = apply_filters('s2_social_links', array('facebook', 'twitter'));
-		if ( !empty($social) ) {
-			$social_buttons = $this->social_buttons($social);
-			$content .= $social_buttons;
-			$html_excerpt .= $social_buttons;
-		}
-
 		// remove excess white space from with $excerpt and $plaintext
 		$excerpt = preg_replace('|[ ]+|', ' ', $excerpt);
 		$plaintext = preg_replace('|[ ]+|', ' ', $plaintext);
 
 		// prepare mail body texts
+        $mailtext = str_ireplace("\x0D", "", $mailtext);
 		$plain_excerpt_body = str_replace("{POST}", $excerpt, $mailtext);
 		$plain_body = str_replace("{POST}", $plaintext, $mailtext);
 		$html_body = str_replace("\r\n", "<br />\r\n", $mailtext);
@@ -604,17 +613,20 @@ class s2class {
 			// first we send plaintext summary emails
 			$recipients = $this->get_registered("cats=$post_cats_string&format=excerpt&author=$post->post_author");
 			$recipients = apply_filters('s2_send_plain_excerpt_subscribers', $recipients, $post->ID);
-			$this->mail($recipients, $subject, $plain_excerpt_body);
+			//$this->mail($recipients, $subject, $plain_excerpt_body);
+			$this->mail($recipients, $subject, $html_body, 'html');
 
 			// next we send plaintext full content emails
 			$recipients = $this->get_registered("cats=$post_cats_string&format=post&author=$post->post_author");
 			$recipients = apply_filters('s2_send_plain_fullcontent_subscribers', $recipients, $post->ID);
-			$this->mail($recipients, $subject, $plain_body);
+			//$this->mail($recipients, $subject, $plain_body);
+			$this->mail($recipients, $subject, $html_body, 'html');
 
 			// next we send html excerpt content emails
 			$recipients = $this->get_registered("cats=$post_cats_string&format=html_excerpt&author=$post->post_author");
 			$recipients = apply_filters('s2_send_html_excerpt_subscribers', $recipients, $post->ID);
-			$this->mail($recipients, $subject, $html_excerpt_body, 'html');
+			//$this->mail($recipients, $subject, $html_excerpt_body, 'html');
+			$this->mail($recipients, $subject, $html_body, 'html');
 
 			// next we send html full content emails
 			$recipients = $this->get_registered("cats=$post_cats_string&format=html&author=$post->post_author");
@@ -623,7 +635,8 @@ class s2class {
 
 			// and finally we send to Public Subscribers
 			$recipients = apply_filters('s2_send_public_subscribers', $public, $post->ID);
-			$this->mail($recipients, $subject, $plain_excerpt_body, 'text');
+			//$this->mail($recipients, $subject, $plain_excerpt_body, 'text');
+			$this->mail($recipients, $subject, $html_body, 'html');
 		}
 	} // end publish()
 
@@ -641,6 +654,9 @@ class s2class {
 		if ( in_array('google', $social) ) {
 			$social_buttons .= '<a href="http://api.addthis.com/oexchange/0.8/forward/google_plusone_share/offer?url=' . urlencode($this->permalink) . '&amp;title=' . urlencode(strip_tags($this->post_title)) . '" target="_blank" ><img src="http://cache.addthiscdn.com/icons/v1/thumbs/google_plusone.gif" border="0" style="margin: 1px;" alt="' . __('Google+', 'subscribe2') . '" /></a>';
 		}
+        if (in_array('linkedin', $social)) {
+            $social_buttons .= '<a href="http://api.addthis.com/oexchange/0.8/forward/linkedin/offer?url=' . urlencode($this->permalink) . '&amp;title=' . urlencode(strip_tags($this->post_title)) . '" target="_blank" ><img src="http://cache.addthiscdn.com/icons/v1/thumbs/linkedin.gif" border="0" style="margin: 1px;" alt="' . __('LinkedIn', 'subscribe2') . '" /></a>';
+        }
 		return apply_filters('s2_social_buttons', $social_buttons);
 	} // end social_buttons()
 
@@ -671,9 +687,10 @@ class s2class {
 		$link .= $id;
 
 		// sort the headers now so we have all substitute information
-		$mailheaders = $this->headers();
+//		$mailheaders = $this->headers();
+        $mailheaders = $this->headers('html', array());
 
-		if ( $is_remind == true ) {
+        if ( $is_remind == true ) {
 			$body = $this->substitute(stripslashes($this->subscribe2_options['remind_email']));
 			$subject = $this->substitute(stripslashes($this->subscribe2_options['remind_subject']));
 		} else {
