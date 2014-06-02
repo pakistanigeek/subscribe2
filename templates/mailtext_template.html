@@ -795,19 +795,21 @@
       border-color: #b9e5ff;
     }
 
-    .header {
-      background: #ffffff;
+    .header td {
       border-bottom:2px solid #eee;
     }
 
-    .footer .wrapper {
+    .header .tagline {
+      color: #555;
+      font-weight: bold;
+      line-height: 36px;
+      padding-left: 10px;
+    }
+
+    .footer td {
       background: #ffffff;
       border-top:1px solid #eee;
       color:#aaa;
-    }
-
-    .footer h5 {
-      padding-bottom: 10px;
     }
 
     table.columns .text-pad {
@@ -837,125 +839,126 @@
   </style>
 </head>
 <body>
-<table class="body">
+
+<table class="container">
   <tr>
-    <td class="center" align="center" valign="top">
-      <center>
+    <td>
 
-        <table class="row header">
-          <tr>
-            <td>
+      <table class="row">
+        <tr>
+          <td class="wrapper last">
 
-              <table class="container">
-                <tr>
-                  <td class="wrapper">
+            <table class="twelve columns header">
+              <tr>
+                <td class="text-pad">
+                  <img src="http://collectiveip-frontend.s3.amazonaws.com/email/collectiveip-grey-small.jpg">
+                  <span class="tagline">
+                    Innovation Intelligence
+                  </span>
+                </td>
+                <td class="expander"></td>
+              </tr>
+            </table>
 
-                    <table class="twelve columns">
-                      <tr>
-                        <td>
-                          <img src="http://collectiveip-frontend.s3.amazonaws.com/email/collectiveip-grey-small.jpg">
-                        <span style="color:#555;font-weight:bold;line-height:36px;padding-left:10px;">
-                          Innovation Intelligence
-                        </span>
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="wrapper last">
 
-                  </td>
-                </tr>
-              </table>
+            <table class="twelve columns">
+              <tr>
+                <td class="text-pad">
 
-            </td>
-          </tr>
-        </table>
+                  <br/>
+                  <h4><a href="{{ PERMALINK }}">{TITLE}</a></h4>
+                  <p>By {AUTHORNAME} &bull; {DATE}</p>
+                  <br/>
+                  <div>
+                    {POST}
+                  </div>
 
-        <table class="container">
-          <tr>
-            <td>
+                </td>
+                <td class="expander"></td>
+              </tr>
+            </table>
 
-              <table class="row">
-                <tr>
-                  <td class="wrapper">
+          </td>
+        </tr>
+        <tr>
+          <td class="wrapper last">
 
-                    <table class="twelve columns">
-                      <tr>
-                        <td>
-                          <br/>
-                          <h4><a href="{{ PERMALINK }}">{TITLE}</a></h4>
-                          <p>By {AUTHORNAME} &bull; {DATE}</p>
-                          <br/>
-                          <div>
-                            {POST}
-                          </div>
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                      <tr>
-                        <td class="center" style="color:#555;">
-                          <center>
-                            Try our Innovation Intelligence search & analysis tools by <a href="https://www.collectiveip.com/signup">signing up for a free acount</a>.                            <br/>
-                            <br/>
-                            Already a Collective IP Pro subscriber? <a href="https://www.collectiveip.com/login">Sign in</a>.
-                            <br/>
-                            <br/>
-                          </center>
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>
+            <table class="twelve columns">
+              <tr>
+                <td class="text-pad">
 
-                  </td>
-                </tr>
-              </table>
+                  <center>
+                    Try our Innovation Intelligence search & analysis tools by <a href="https://www.collectiveip.com/signup">signing up for a free acount</a>.
+                    <br/>
+                    <br/>
+                    Already a Collective IP Pro subscriber? <a href="https://www.collectiveip.com/login">Sign in</a>.
+                    <br/>
+                    <br/>
+                  </center>
 
-              <table class="row footer">
-                <tr>
-                  <td class="wrapper">
+                </td>
+                <td class="expander"></td>
+              </tr>
+            </table>
 
-                    <table class="twelve columns">
-                      <tr>
-                        <td>
+          </td>
+        </tr>
+        <tr>
+          <td class="wrapper last">
 
-                          <p style="color:#999;font-size:12px;">Collective IP, Inc.
-                            <br/>3455 Ringsby Ct #106
-                            <br/>Denver, CO 80216
-                            <br/>support@collectiveip.com</p>
+            <table class="twelve columns footer">
+              <tr>
+                <td class="text-pad">
 
-                          <p style="color:#999;font-size:12px;">+1 (888) 536-5264</p>
+                  <br/>
+                  <p style="color:#999;font-size:12px;">Collective IP, Inc.
+                    <br/>3455 Ringsby Ct #106
+                    <br/>Denver, CO 80216
+                    <br/>support@collectiveip.com</p>
 
-                          <p style="color:#999;font-size:12px;">
-                            <a href="https://www.collectiveip.com/terms" style="color:#999;">Terms</a>
-                            | <a href="https://www.collectiveip.com/privacy" style="color:#999;">Privacy</a>
-                          </p>
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>
-                    <table class="eight columns">
-                      <tr>
-                        <td style="color:#aaa;font-size:10px;" class="center">
-                          <center>
-                          You are receiving this email because you subscribed to the <a href="https://www.collectiveip.com/blog/" style="color:#999;">Collective IP Blog</a>.
-                            <br/>
-                          If you no longer want to receive these emails, please <a href="https://www.collectiveip.com/blog/unsubscribe/" style="color:#999;">unsubscribe</a>.
-                          </center>
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
+                  <p style="color:#999;font-size:12px;">+1 (888) 536-5264</p>
 
-              <!-- container end below -->
-            </td>
-          </tr>
-        </table>
+                  <p style="color:#999;font-size:12px;">
+                    <a href="https://www.collectiveip.com/terms" style="color:#999;">Terms</a>
+                    | <a href="https://www.collectiveip.com/privacy" style="color:#999;">Privacy</a>
+                  </p>
 
-      </center>
+                </td>
+                <td class="expander"></td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="wrapper last">
+
+            <table class="twelve columns">
+              <tr>
+                <td style="color:#aaa;font-size:10px;" class="text-pad center">
+
+                  <center>
+                    You are receiving this email because you subscribed to the <a href="https://www.collectiveip.com/blog/" style="color:#999;">Collective IP Blog</a>.
+                    <br/>
+                    If you no longer want to receive these emails, please <a href="https://www.collectiveip.com/blog/unsubscribe/" style="color:#999;">unsubscribe</a>.
+                  </center>
+
+                </td>
+                <td class="expander"></td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+      </table>
+
     </td>
   </tr>
 </table>
+
 </body>
 </html>
