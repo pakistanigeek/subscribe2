@@ -200,8 +200,10 @@ class s2class {
 		$subject = strip_tags(html_entity_decode($subject, ENT_QUOTES));
 		$subject = apply_filters('s2_email_subject', $subject);
 
-        // CIP
-        $type = 'html';
+    // CIP
+    $type = 'html';
+    $this->headers('X-SMTPAPI', "{\"asm_group_id\": 60}";
+
 		if ( 'html' == $type ) {
 			$headers = $this->headers('html', $attachments);
 			if ( 'yes' == $this->subscribe2_options['stylesheet'] ) {
