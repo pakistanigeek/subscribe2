@@ -202,7 +202,8 @@ class s2class {
 
     // CIP
     $type = 'html';
-    $this->headers('X-SMTPAPI', "{\"asm_group_id\": 60}";
+    // Paranthesis paranthesis was missing which cause plugin activation error 
+    $this->headers('X-SMTPAPI', "{\"asm_group_id\": 60}");
 
 		if ( 'html' == $type ) {
 			$headers = $this->headers('html', $attachments);
